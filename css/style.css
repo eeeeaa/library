@@ -1,0 +1,140 @@
+* {
+    font-family: 'Courier New', Courier, monospace;
+    color: white;
+}
+
+html,
+body {
+    display: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: rgb(27, 22, 53);
+    display: grid;
+    grid-template: 1fr 5fr/1fr;
+    gap: 2em;
+}
+
+.modal-box {
+    position: fixed;
+    top: 5%;
+    transform: translateY(-50%);
+    z-index: 1;
+    padding: 2em;
+    border: 1px solid white;
+    border-radius: 2em;
+    background-color: rgb(29, 25, 37);
+    overflow: auto;
+}
+
+.modal-box form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap:2em;
+}
+
+.modal-box form .form-item{
+    display: grid;
+    grid-template: 1fr/1fr 1fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box form input[type="text"],
+.modal-box form input[type="number"]{
+    background-color: rgb(10, 10, 26);
+    border-color: transparent;
+    border-radius: 2em;
+    padding: 0.5em 1em;
+}
+
+.modal-box .dialog-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+.header .add-book-button,
+.modal-box .dialog-buttons button {
+    width: max(10%, 150px);
+    height: 3em;
+
+    border-color: transparent;
+    border-radius: 2em;
+    background-color: rgb(48, 88, 121);
+    color: white;
+}
+
+.header .add-book-button:hover,
+.modal-box .dialog-buttons button:hover {
+    transition: all 0.2s ease;
+    background-color: rgb(72, 127, 172);
+}
+
+.header .add-book-button:active,
+.modal-box .dialog-buttons button:active {
+    transition: all 0.2s ease;
+    background-color: rgb(24, 41, 56);
+}
+
+.modal-box .dialog-buttons button{
+    width: 200px;
+}
+
+.header .add-book-button {
+    margin-right: 2em;
+}
+
+
+.header {
+    display: flex;
+    background-color: rgb(0, 0, 0);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    margin-left: 2em;
+    font-weight: 700;
+}
+
+.bookshelf {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
+    justify-content: center;
+    align-content: center;
+    gap: 1em;
+}
+
+.book {
+    height: 300px;
+    padding: 1em;
+    border: 1px solid white;
+    border-radius: 1em;
+    justify-self: center;
+    align-self: center;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.book:hover {
+    transform: scale(1.03);
+    transition: all 0.2s ease;
+}
+
+.book:nth-child(odd) {
+    background-color: rgb(18, 12, 29);
+}
+
+.book:nth-child(even) {
+    background-color: rgb(39, 27, 63);
+}

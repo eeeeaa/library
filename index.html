@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/library.js" defer></script>
+</head>
+<body>
+    <dialog class="modal-box">
+        <form action="" method="get">
+            <div class="form-item">
+                <label for="book-title">Book title:</label>
+                <input type="text" name="book-title" id="book-title" required>
+            </div>
+            <div class="form-item">
+                <label for="book-author">Author:</label>
+                <input type="text" name="book-author" id="book-author" required>
+            </div>
+            <div class="form-item">
+                <label for="book-total-pages">Total Pages:</label>
+                <input type="number" name="book-total-pages" id="book-total-pages" required>
+            </div>
+            <div class="form-item">
+                <label for="book-read-status">Book Read:</label>
+                <input type="checkbox" name="book-read-status" id="book-read-status">
+            </div>
+            <div class="dialog-buttons">
+                <button type="submit" class="submit-book-button">Add new book</button>
+                <button type="button" class="close-dialog-button">Close dialog</button>
+            </div>
+        </form>
+    </dialog>
+    <div class="header">
+        <h2>Library</h2>
+        <button type="button" class="add-book-button">New Book</button>
+    </div>
+    <div class="bookshelf">
+
+    </div>
+</body>
+</html>
