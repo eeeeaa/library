@@ -13,8 +13,38 @@ body {
 body {
     background-color: rgb(27, 22, 53);
     display: grid;
-    grid-template: 1fr 5fr/1fr;
+    grid-template: 1fr auto/1fr;
     gap: 2em;
+}
+
+@keyframes cardFadeIn {
+    0% {
+        transform: translateY(1em);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn{
+    0% {
+        transform: translateY(-110%);
+    }
+
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+.cardAnimation{
+    animation: cardFadeIn 0.5s;
+}
+
+.modal-box[open]{
+    animation: modalSlideIn 0.5s;
 }
 
 .modal-box {
@@ -58,7 +88,9 @@ body {
     gap: 1em;
 }
 
+.remove-book-button,
 .header .add-book-button,
+.header .random-book-button,
 .modal-box .dialog-buttons button {
     width: max(10%, 150px);
     height: 3em;
@@ -69,13 +101,17 @@ body {
     color: white;
 }
 
+.remove-book-button:hover,
 .header .add-book-button:hover,
+.header .random-book-button:hover,
 .modal-box .dialog-buttons button:hover {
     transition: all 0.2s ease;
     background-color: rgb(72, 127, 172);
 }
 
+.remove-book-button:active,
 .header .add-book-button:active,
+.header .random-book-button:active,
 .modal-box .dialog-buttons button:active {
     transition: all 0.2s ease;
     background-color: rgb(24, 41, 56);
@@ -85,7 +121,7 @@ body {
     width: 200px;
 }
 
-.header .add-book-button {
+.header .random-book-button {
     margin-right: 2em;
 }
 
@@ -95,9 +131,11 @@ body {
     background-color: rgb(0, 0, 0);
     justify-content: space-between;
     align-items: center;
+    gap: 2em;
 }
 
 .header h2 {
+    margin-right: auto;
     margin-left: 2em;
     font-weight: 700;
 }
@@ -124,6 +162,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
+    gap:2em;
 }
 
 .book:hover {
@@ -137,4 +176,8 @@ body {
 
 .book:nth-child(even) {
     background-color: rgb(39, 27, 63);
+}
+
+.toggle-container {
+    display: flex;
 }
