@@ -1,147 +1,161 @@
-const myLibrary = [];
-const bookshelf = document.querySelector(".bookshelf");
+class Book {
+    constructor(title, author, pageNum, isRead) {
+        this.title = title;
+        this.author = author;
+        this.pageNum = pageNum;
+        this.isRead = isRead;
+    }
 
-//Add new book dialog
-const addBookButton = document.querySelector(".add-book-button");
-const modalDialog = document.querySelector(".modal-box");
-const closeDialogButton = document.querySelector(".close-dialog-button");
-const submitBookButton = document.querySelector(".submit-book-button");
-const randomBookButton = document.querySelector(".random-book-button");
+    info = () => {
+        let readStatus = (this.isRead) ? "already read" : "not read yet";
+        return `${this.title} by ${this.author}, ${this.pageNum} pages, ${readStatus}.`;
+    }
 
-function Book(title, author, pageNum, isRead) {
-    this.title = title;
-    this.author = author;
-    this.pageNum = pageNum;
-    this.isRead = isRead;
-    this.info = () => {
-        let readStatus = (isRead) ? "already read" : "not read yet";
-        return `${title} by ${author}, ${pageNum} pages, ${readStatus}.`;
-    };
-    this.changeReadStatus = () => {
-        isRead = !isRead;
+    changeReadStatus = () => {
+        this.isRead = !this.isRead;
     }
 }
 
-/**
- * 
- * @param {Book} book 
- */
-function addBookToLibrary(book) {
-    myLibrary.push(book);
+const library = (function (doc) {
+    const myLibrary = [];
+    const bookshelf = doc.querySelector(".bookshelf");
 
-    let displayBook =  document.createElement("div");
-    displayBook.setAttribute("data-index", myLibrary.length - 1);
-    displayBook.classList.add("book");
-    displayBook.classList.add("cardAnimation");
+    function addBookToLibrary(book) {
+        myLibrary.push(book);
 
-    let bookTitle = document.createElement("h2");
-    bookTitle.classList.add("book-title");
-    bookTitle.textContent = book.title;
+        let displayBook = doc.createElement("div");
+        displayBook.setAttribute("data-index", myLibrary.length - 1);
+        displayBook.classList.add("book");
+        displayBook.classList.add("cardAnimation");
 
-    let bookInfo = document.createElement("div");
-    bookInfo.classList.add("book-info");
-    bookInfo.textContent = book.info();
+        let bookTitle = doc.createElement("h2");
+        bookTitle.classList.add("book-title");
+        bookTitle.textContent = book.title;
 
-    let removeButton = createRemoveButton(displayBook);
+        let bookInfo = doc.createElement("div");
+        bookInfo.classList.add("book-info");
+        bookInfo.textContent = book.info();
 
-    let toggle = createReadStatusToggle(displayBook);
+        let removeButton = createRemoveButton(displayBook);
 
-    displayBook.appendChild(bookTitle);
-    displayBook.appendChild(bookInfo);
-    displayBook.appendChild(removeButton);
-    displayBook.appendChild(toggle);
-    
-    bookshelf.appendChild(displayBook);
-}
+        let toggle = createReadStatusToggle(displayBook);
 
-function createRemoveButton(displayBook){
-    let button = document.createElement("button");
-    button.classList.add("remove-book-button");
-    button.textContent = "Remove this book";
-    button.addEventListener("click", (e)=> {
-        let targetBook = displayBook;
-        let targetIndex = targetBook.getAttribute("data-index");
-        myLibrary.splice(targetIndex, 1);
-        bookshelf.removeChild(targetBook);
+        displayBook.appendChild(bookTitle);
+        displayBook.appendChild(bookInfo);
+        displayBook.appendChild(removeButton);
+        displayBook.appendChild(toggle);
 
-        let books = bookshelf.children;
-        for(let i = 0; i < books.length; i++){
-            let child = books[i];
-            child.setAttribute("data-index", i);
-        }
-        console.log(myLibrary);
-    });
+        bookshelf.appendChild(displayBook);
+    }
 
-    return button;
-}
+    function createRemoveButton(displayBook) {
+        let button = doc.createElement("button");
+        button.classList.add("remove-book-button");
+        button.textContent = "Remove this book";
+        button.addEventListener("click", (e) => {
+            let targetBook = displayBook;
+            let targetIndex = targetBook.getAttribute("data-index");
+            myLibrary.splice(targetIndex, 1);
+            bookshelf.removeChild(targetBook);
 
-function createReadStatusToggle(displayBook){
-    let container = document.createElement("div");
-    container.classList.add("toggle-container");
-    
-    let toggleLabel = document.createElement("label");
-    toggleLabel.setAttribute("for","toggle-read-status");
-    toggleLabel.textContent = "Read Status:";
+            let books = bookshelf.children;
+            for (let i = 0; i < books.length; i++) {
+                let child = books[i];
+                child.setAttribute("data-index", i);
+            }
+            console.log(myLibrary);
+        });
 
-    let toggle = document.createElement("input");
-    toggle.classList.add("toggle-read-status");
-    toggle.setAttribute("type","checkbox");
-    toggle.setAttribute("name", "toggle-read-status");
-    
-    let parent = displayBook;
-    let parentIndex = parent.getAttribute("data-index");
-    toggle.checked = myLibrary[parentIndex].isRead;
+        return button;
+    }
 
-    toggle.addEventListener("change", (e) => {
-        myLibrary[parentIndex].changeReadStatus();
-        updateBookInfo(displayBook, myLibrary[parentIndex].info());
-    });
+    function createReadStatusToggle(displayBook) {
+        let container = doc.createElement("div");
+        container.classList.add("toggle-container");
 
-    container.appendChild(toggleLabel);
-    container.appendChild(toggle);
+        let toggleLabel = doc.createElement("p");
+        toggleLabel.textContent = "Read Status:";
 
-    return container;
-}
+        let toggle = doc.createElement("input");
+        toggle.classList.add("toggle-read-status");
+        toggle.setAttribute("type", "checkbox");
+        toggle.setAttribute("name", "toggle-read-status");
 
-function updateBookInfo(displayBook, updatedText){
-    displayBook.querySelector(".book-info").textContent = updatedText;
-}
+        let parent = displayBook;
+        let parentIndex = parent.getAttribute("data-index");
+        toggle.checked = myLibrary[parentIndex].isRead;
 
-//Listener
-addBookButton.addEventListener("click", (e) => {
-    modalDialog.showModal();
-});
+        toggle.addEventListener("change", (e) => {
+            myLibrary[parentIndex].changeReadStatus();
+            updateBookInfo(displayBook, myLibrary[parentIndex].info());
+        });
 
-closeDialogButton.addEventListener("click", (e) => {
-    modalDialog.close();
-});
+        container.appendChild(toggleLabel);
+        container.appendChild(toggle);
 
-randomBookButton.addEventListener("click", (e) => {
-    let randBook = new Book(
-        (Math.random() + 1).toString(36).substring(5),
-        (Math.random() + 1).toString(36).substring(5),
-        Math.round((Math.random() + 1) * 10),
-        (Math.random() < 0.5)? true : false
-    )
-    addBookToLibrary(randBook);
-});
+        return container;
+    }
 
-submitBookButton.addEventListener("click", (e) => {
-    let title = document.getElementById("book-title");
-    let author = document.getElementById("book-author");
-    let pageNum = document.getElementById("book-total-pages");
-    let isRead = document.getElementById("book-read-status");
-    console.log(`${title.value} ${author.value} ${pageNum.value} ${isRead.value}`);
-    if(title.value != "" && author.value != "" && !isNaN(pageNum.value)){
-        e.preventDefault();
-        addBookToLibrary(
-            new Book(
-                title.value,
-                author.value,
-                pageNum.value,
-                isRead.checked
+    function updateBookInfo(displayBook, updatedText) {
+        displayBook.querySelector(".book-info").textContent = updatedText;
+    }
+
+    return {
+        addBookToLibrary
+    }
+})(document);
+
+const libraryAction = (function (doc, lib) {
+    const addBookButton = doc.querySelector(".add-book-button");
+    const modalDialog = doc.querySelector(".modal-box");
+    const closeDialogButton = doc.querySelector(".close-dialog-button");
+    const submitBookButton = doc.querySelector(".submit-book-button");
+    const randomBookButton = doc.querySelector(".random-book-button");
+
+    function initializeListeners() {
+        addBookButton.addEventListener("click", (e) => {
+            modalDialog.showModal();
+        });
+
+        closeDialogButton.addEventListener("click", (e) => {
+            modalDialog.close();
+        });
+
+        randomBookButton.addEventListener("click", (e) => {
+            let randBook = new Book(
+                (Math.random() + 1).toString(36).substring(5),
+                (Math.random() + 1).toString(36).substring(5),
+                Math.round((Math.random() + 1) * 10),
+                (Math.random() < 0.5) ? true : false
             )
-        );
-        modalDialog.close();
+            lib.addBookToLibrary(randBook);
+        });
+
+        submitBookButton.addEventListener("click", (e) => {
+            let title = doc.getElementById("book-title");
+            let author = doc.getElementById("book-author");
+            let pageNum = doc.getElementById("book-total-pages");
+            let isRead = doc.getElementById("book-read-status");
+            console.log(`${title.value} ${author.value} ${pageNum.value} ${isRead.value}`);
+            if (title.value != "" && author.value != "" && !isNaN(pageNum.value)) {
+                e.preventDefault();
+                lib.addBookToLibrary(
+                    new Book(
+                        title.value,
+                        author.value,
+                        pageNum.value,
+                        isRead.checked
+                    )
+                );
+                modalDialog.close();
+            }
+        });
     }
-});
+
+    return {
+        initializeListeners
+    }
+
+})(document, library);
+
+libraryAction.initializeListeners();
